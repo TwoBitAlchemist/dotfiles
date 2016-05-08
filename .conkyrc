@@ -1,0 +1,84 @@
+# Conky, a system monitor, based on torsmo
+#
+# Any original torsmo code is licensed under the BSD license
+#
+# All code written since the fork of torsmo is licensed under the GPL
+#
+# Please see COPYING for details
+#
+# Copyright (c) 2004, Hannu Saransaari and Lauri Hakkarainen
+# Copyright (c) 2005-2010 Brenden Matthews, Philip Kovacs, et. al. (see AUTHORS)
+# All rights reserved.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+alignment top_left
+background yes
+border_width 0
+border_inner_margin 1
+color0 7f0
+color1 06f
+color2 black
+cpu_avg_samples 2
+default_color cd0
+default_outline_color black
+default_shade_color white
+diskio_avg_samples 0
+double_buffer yes
+draw_borders no
+draw_graph_borders yes
+draw_outline yes
+draw_shades yes
+use_xft yes
+xftfont Unispace:size=18
+xftalpha 0.7
+gap_x 300
+gap_y 6
+minimum_size 5 5
+net_avg_samples 0
+no_buffers yes
+out_to_console no
+out_to_stderr no
+extra_newline no
+own_window yes
+own_window_transparent yes
+own_window_type panel
+own_window_hints undecorated,sticky,skip_taskbar,skip_pager,above
+stippled_borders 0
+times_in_seconds yes
+update_interval 0.5
+uppercase no
+use_spacer left
+show_graph_scale no
+show_graph_range no
+short_units
+
+TEXT
+${color1} \
+${format_time $uptime "\ww, \dd ${color2}| ${color1}\hh${blink :}\mm"} \
+${color2}| ${color}\
+$nodename ${color0}$kernel ${color}\
+${if_match "${machine}"=="x86_64"}64-bit${else}32-bit${endif} \
+${color2}| ${color0}\
+${execi 31536000 date -d "+400 years" +%Y}\
+${time -%m-%d} \
+${color}${time %a} \
+${color2}| ${color}\
+CPU: ${color0}$cpu% \
+${color2}| ${color}\
+RAM: ${color0}$mem \
+${color2}| ${color1}\
+${time %Ww, %jd} \
+${color2}| ${color1}\
+${time %H}${blink :}${time %M.%S} 
