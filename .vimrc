@@ -3,6 +3,13 @@ syntax on
 "colorscheme jellybeans
 colorscheme synic
 
+set encoding=utf-8
+set fileformat=unix
+
+" Enable mouse support everywhere
+" (i.e. in console)
+set mouse=a
+
 " Line numbering and autoindent
 set number
 set autoindent
