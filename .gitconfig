@@ -1,0 +1,16 @@
+[user]
+	name = J. Kevin Bay
+	email = seregon@gmail.com
+[color]
+	ui = true
+[core]
+	editor = vim
+	excludesfile = ~/.gitignore
+	askpass = git-gui --askpass
+[alias]
+	co = checkout
+	br = branch
+	ci = commit
+	st = status
+[push]
+	default = current
