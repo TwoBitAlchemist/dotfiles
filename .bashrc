@@ -20,36 +20,62 @@ set -o vi
 [[ -e ".ansi-color-vars" ]] && . .ansi-color-vars
 
 # UTF-8 Connector pieces
-box_color=$gray
-ul_box_corner="\342\224\214"
-ll_box_corner="\342\224\224"
-flat_dash="\342\224\200"
-prompt_aglet="\342\225\274"
+box_color_=$gray
+ul_box_corner_="\342\224\214"
+ll_box_corner_="\342\224\224"
+flat_dash_="\342\224\200"
+prompt_aglet_="\342\225\274"
 big_red_x="$red\342\234\227$box_color"
 
-# Username settings
-_root="$red\h"
-_user="$yellow\u$gray@$cyan\h"
+
+function colorize_git_state {
+    LOCAL=$(git rev-parse @)
+    REMOTE=$(git rev-parse @{u} 2>/dev/null)
+    BASE=$(git merge-base @ @{u} 2>/dev/null)
+
+    gitColor=$white
+    if [[ -z $REMOTE ]]; then
+        gitColor+=$boldbggreen      # no upstream configured
+    elif [[ $LOCAL = $REMOTE ]]; then
+        gitColor+=$boldbgblue        # up to date
+    elif [[ $LOCAL = $BASE ]]; then
+        gitColor+=$boldbgred         # needs pull
+    elif [[ $REMOTE = $BASE ]]; then
+        gitColor+=$boldbgcyan        # changes to push
+    else
+        gitColor+=$boldbgmagenta     # local and remote have diverged
+    fi
+}
+
 
 function add_git_branch {
-    ref=$(/usr/lib/git-core/git-symbolic-ref HEAD 2>/dev/null) || return
-    _br_display="[$bgyellow$brightwhite"
-    _br_display+=${ref#refs/heads/}
-    _br_display+="$box_color]"
-    echo -e $_br_display
+    ref=$(git symbolic-ref --short HEAD 2>/dev/null) || return
+    colorize_git_state
+    echo -e ">$gitColor $ref $nocolor$box_color_"
+}
+
+function display_user {
+    _root="$red\h"
+    _user="$yellow\u$gray@$cyan\h"
+    if [[ $EUID == 0 ]]; then
+        echo $_root;
+    else
+        echo $_user;
+    fi
 }
 
 # Virtualenv name display
-_venv="($nocolor%s$box_color)"
+_venv="($nocolor%s$box_color_)"
 
-_PS1="$box_color$ul_box_corner$flat_dash"
-_PS1+="\$([[ \$? != 0 ]] && echo \"[$big_red_x]$flat_dash\")"
-_PS1+="[$(if [[ ${EUID} == 0 ]];then echo $_root; else echo $_user; fi)"
-_PS1+="$box_color]$flat_dash[$green\w$box_color]"
-_PS1+="$flat_dash\$(add_git_branch)\n"
-_PS1+="$ll_box_corner$flat_dash"
+# Line 1
+_PS1="$box_color_$ul_box_corner_$flat_dash_"
+_PS1+="\$([[ \$? != 0 ]] && echo \"[$big_red_x]$flat_dash_\")"
+_PS1+="//$(display_user)$box_color_:$green\w$box_color_/$flat_dash_"
+_PS1+="\$(add_git_branch)\n"
+# Line 2
+_PS1+="$ll_box_corner_$flat_dash_"
 _PS1+="\$([[ -n \$VIRTUAL_ENV ]] && printf \"$_venv\" \${VIRTUAL_ENV#$HOME/})"
-_PS1+="$flat_dash$prompt_aglet$nocolor"
+_PS1+="$flat_dash_$prompt_aglet_$brightwhite"
 
 export PS1="$_PS1 "
 
