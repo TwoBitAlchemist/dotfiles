@@ -37,7 +37,7 @@ function add_git_branch {
     MERGE_BASE=$(git merge-base $BRANCH $REMOTE/$BRANCH 2>/dev/null)
 
     git_color=$white
-    if [[ -z $REMOTE_SHA ]]; then
+    if [[ -z $REMOTE ]] || [[ -z $REMOTE_SHA ]]; then
         git_color+=$boldbggray        # no upstream configured
     elif [[ $LOCAL_SHA = $REMOTE_SHA ]]; then
         git_color+=$boldbgblue        # up to date
