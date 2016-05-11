@@ -2,7 +2,7 @@
 [[ $- != *i* ]] && return
 
 export LC_ALL="en_US.UTF-8"
-export PAGER=vimpager
+[[ -n "vimpager" ]] && export PAGER=vimpager
 export PYTHONSTARTUP=~/.pythonstartup
 
 
