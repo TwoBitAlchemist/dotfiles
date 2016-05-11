@@ -16,49 +16,40 @@ set -o noclobber
 #set -o emacs
 set -o vi
 
-# basename \"$VIRTUAL_ENV\"
 # https://bbs.archlinux.org/viewtopic.php?pid=1068202#p1068202
-# Colors
-light_red="\[\e[0;31m\]"
-light_green="\[\e[0;32m\]"
-light_brown="\[\e[0;33m\]"
-light_cyan="\[\e[0;36m\]"
-light_gray="\[\e[0;37m\]"
-bright_white="\[\e[1;37m\]"
-reset_color="\[\e[0m\]"
+[[ -e ".ansi-color-vars" ]] && . .ansi-color-vars
 
 # UTF-8 Connector pieces
-box_color=$light_gray
+box_color=$gray
 ul_box_corner="\342\224\214"
 ll_box_corner="\342\224\224"
 flat_dash="\342\224\200"
 prompt_aglet="\342\225\274"
-big_red_x="$light_red\342\234\227$box_color"
+big_red_x="$red\342\234\227$box_color"
 
 # Username settings
-_root="$light_red\h"
-_user="$light_brown\u$light_gray@$light_cyan\h"
+_root="$red\h"
+_user="$yellow\u$gray@$cyan\h"
 
 function add_git_branch {
     ref=$(/usr/lib/git-core/git-symbolic-ref HEAD 2>/dev/null) || return
-    hilite="\e[0;43m"
-    _br_display="[$hilite${bright_white:2: -2}"
+    _br_display="[$bgyellow$brightwhite"
     _br_display+=${ref#refs/heads/}
-    _br_display+="${box_color:2: -2}]"
+    _br_display+="$box_color]"
     echo -e $_br_display
 }
 
 # Virtualenv name display
-_venv="($reset_color%s$box_color)"
+_venv="($nocolor%s$box_color)"
 
 _PS1="$box_color$ul_box_corner$flat_dash"
 _PS1+="\$([[ \$? != 0 ]] && echo \"[$big_red_x]$flat_dash\")"
 _PS1+="[$(if [[ ${EUID} == 0 ]];then echo $_root; else echo $_user; fi)"
-_PS1+="$box_color]$flat_dash[$light_green\w$box_color]"
+_PS1+="$box_color]$flat_dash[$green\w$box_color]"
 _PS1+="$flat_dash\$(add_git_branch)\n"
 _PS1+="$ll_box_corner$flat_dash"
 _PS1+="\$([[ -n \$VIRTUAL_ENV ]] && printf \"$_venv\" \${VIRTUAL_ENV#$HOME/})"
-_PS1+="$flat_dash$prompt_aglet$reset_color"
+_PS1+="$flat_dash$prompt_aglet$nocolor"
 
 export PS1="$_PS1 "
 
