@@ -28,30 +28,27 @@ prompt_aglet_="\342\225\274"
 big_red_x="$red\342\234\227$box_color"
 
 
-function colorize_git_state {
-    LOCAL=$(git rev-parse @)
-    REMOTE=$(git rev-parse @{u} 2>/dev/null)
-    BASE=$(git merge-base @ @{u} 2>/dev/null)
-
-    gitColor=$white
-    if [[ -z $REMOTE ]]; then
-        gitColor+=$boldbggreen      # no upstream configured
-    elif [[ $LOCAL = $REMOTE ]]; then
-        gitColor+=$boldbgblue        # up to date
-    elif [[ $LOCAL = $BASE ]]; then
-        gitColor+=$boldbgred         # needs pull
-    elif [[ $REMOTE = $BASE ]]; then
-        gitColor+=$boldbgcyan        # changes to push
-    else
-        gitColor+=$boldbgmagenta     # local and remote have diverged
-    fi
-}
-
-
 function add_git_branch {
-    ref=$(git symbolic-ref --short HEAD 2>/dev/null) || return
-    colorize_git_state
-    echo -e ">$gitColor $ref $nocolor$box_color_"
+    BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null) || return
+
+    REMOTE=$(git remote)
+    LOCAL_SHA=$(git rev-parse HEAD)
+    REMOTE_SHA=$(git rev-parse $REMOTE/$BRANCH 2>/dev/null)
+    MERGE_BASE=$(git merge-base $BRANCH $REMOTE/$BRANCH 2>/dev/null)
+
+    git_color=$white
+    if [[ -z $REMOTE_SHA ]]; then
+        git_color+=$boldbggreen      # no upstream configured
+    elif [[ $LOCAL_SHA = $REMOTE_SHA ]]; then
+        git_color+=$boldbgblue        # up to date
+    elif [[ $LOCAL_SHA = $MERGE_BASE ]]; then
+        git_color+=$boldbgred         # needs pull
+    elif [[ $REMOTE_SHA = $MERGE_BASE ]]; then
+        git_color+=$boldbgcyan        # changes to push
+    else
+        git_color+=$boldbgmagenta     # local and remote have diverged
+    fi
+    echo -e ">$git_color $BRANCH $nocolor$box_color_"
 }
 
 function display_user {
