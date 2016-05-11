@@ -38,15 +38,15 @@ function add_git_branch {
 
     git_color=$white
     if [[ -z $REMOTE_SHA ]]; then
-        git_color+=$boldbggreen      # no upstream configured
+        git_color+=$boldbggray        # no upstream configured
     elif [[ $LOCAL_SHA = $REMOTE_SHA ]]; then
         git_color+=$boldbgblue        # up to date
     elif [[ $LOCAL_SHA = $MERGE_BASE ]]; then
-        git_color+=$boldbgred         # needs pull
+        git_color+=$boldbgcyan        # needs pull
     elif [[ $REMOTE_SHA = $MERGE_BASE ]]; then
-        git_color+=$boldbgcyan        # changes to push
+        git_color+=$boldbggreen       # changes to push
     else
-        git_color+=$boldbgmagenta     # local and remote have diverged
+        git_color+=$boldbgred         # local and remote have diverged
     fi
     echo -e ">$git_color $BRANCH $nocolor$box_color_"
 }
