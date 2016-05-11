@@ -25,7 +25,7 @@ ul_box_corner_="\342\224\214"
 ll_box_corner_="\342\224\224"
 flat_dash_="\342\224\200"
 prompt_aglet_="\342\225\274"
-big_red_x="$red\342\234\227$box_color"
+big_red_x="$red\342\234\227$box_color_"
 
 
 function add_git_branch {
@@ -51,9 +51,9 @@ function add_git_branch {
     echo -e ">$git_color $BRANCH $nocolor$box_color_"
 }
 
-function display_user {
-    _root="$red\h"
-    _user="$yellow\u$gray@$cyan\h"
+function display_user_and_pwd {
+    _root="$white${boldbggreen}ACCESS GRANTED$nocolor $red\w"
+    _user="$yellow\u$gray@$cyan\h$box_color_:$green\w"
     if [[ $EUID == 0 ]]; then
         echo $_root;
     else
@@ -67,7 +67,7 @@ _venv="($nocolor%s$box_color_)"
 # Line 1
 _PS1="$box_color_$ul_box_corner_$flat_dash_"
 _PS1+="\$([[ \$? != 0 ]] && echo \"[$big_red_x]$flat_dash_\")"
-_PS1+="//$(display_user)$box_color_:$green\w$box_color_/$flat_dash_"
+_PS1+="//$(display_user_and_pwd)$box_color_/$flat_dash_"
 _PS1+="\$(add_git_branch)\n"
 # Line 2
 _PS1+="$ll_box_corner_$flat_dash_"
