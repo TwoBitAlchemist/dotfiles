@@ -26,6 +26,8 @@ set shiftwidth=4
 " Incremental Search Highlighting
 " (Handy for building regexes)
 set incsearch
+" ...but then stop highlighting
+set nohlsearch
 
 " Required for some colorschemes
 set t_Co=256
