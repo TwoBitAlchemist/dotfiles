@@ -68,16 +68,16 @@ function print_venv {
 }
 
 # Line 1
-_PS1="$box_color_$ul_box_corner_$flat_dash_"
-_PS1+="\$([[ \$? != 0 ]] && echo \"[$big_red_x]$flat_dash_\")"
-_PS1+="//$(display_user_and_pwd)$box_color_/$flat_dash_"
-_PS1+="\$(add_git_branch)\n"
+PS1="$box_color_$ul_box_corner_$flat_dash_"
+PS1+="\$([[ \$? != 0 ]] && echo \"[$big_red_x]$flat_dash_\")"
+PS1+="//$(display_user_and_pwd)$box_color_/$flat_dash_"
+PS1+="\$(add_git_branch)\n"
 # Line 2
-_PS1+="$ll_box_corner_$flat_dash_"
-_PS1+="\$(print_venv)"
-_PS1+="$flat_dash_$prompt_aglet_$nocolor"
+PS1+="$ll_box_corner_$flat_dash_"
+PS1+="\$(print_venv)"
+PS1+="$flat_dash_$prompt_aglet_$nocolor "
 
-export PS1="$_PS1 "
+export PS1=$PS1
 
 # Use custom PS1 (above) instead of default virtualenv prompt
 export VIRTUAL_ENV_DISABLE_PROMPT=1
@@ -89,7 +89,11 @@ export VIRTUAL_ENV_DISABLE_PROMPT=1
 alias sudo='sudo '
 
 # ls options
-alias ls='ls --color --indicator-style=slash --group-directories-first '
+if [[ -z $(ls --color >/dev/null 2>&1) ]]; then
+    alias ls='ls --color --indicator-style=slash --group-directories-first '
+else
+    alias ls='ls -FG '
+fi
 alias lsa='ls -A '
 alias lsl='ls -lh '
 alias lsla='ls -lAh '
