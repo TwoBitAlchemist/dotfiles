@@ -88,9 +88,11 @@ export VIRTUAL_ENV_DISABLE_PROMPT=1
 alias sudo='sudo '
 
 # ls options
-if [[ -z $(ls --color >/dev/null 2>&1) ]]; then
+ls --color >/dev/null 2>&1
+if [[ -z $? ]]; then
     alias ls='ls --color --indicator-style=slash --group-directories-first '
 else
+    # approx. equiv. of above on MacOS X ls which does not support long opts
     alias ls='ls -FG '
 fi
 alias lsa='ls -A '
