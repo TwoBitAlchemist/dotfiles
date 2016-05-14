@@ -39,3 +39,6 @@ hi colorcolumn ctermbg=6
 " Open splits to right and below (reverse of default)
 set splitbelow
 set splitright
+
+" Install plugins with Pathogen
+execute pathogen#infect()
