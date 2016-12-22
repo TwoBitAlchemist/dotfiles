@@ -16,7 +16,7 @@ set -o noclobber
 set -o vi
 
 # https://bbs.archlinux.org/viewtopic.php?pid=1068202#p1068202
-[[ -e ".ansi-color-vars" ]] && . .ansi-color-vars
+[[ -e "$HOME/.ansi-color-vars" ]] && . $HOME/.ansi-color-vars
 
 # UTF-8 Connector pieces
 box_color_=$gray

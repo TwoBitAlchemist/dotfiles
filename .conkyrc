@@ -55,7 +55,7 @@ own_window yes
 own_window_transparent yes
 own_window_type panel
 own_window_hints undecorated,sticky,skip_taskbar,skip_pager,above
-stippled_borders 0
+stippled_borders 1
 times_in_seconds yes
 update_interval 0.5
 uppercase no
