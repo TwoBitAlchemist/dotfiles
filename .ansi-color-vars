@@ -1,3 +1,5 @@
+# \033 ASCII escape -- equivalent to \e but supposedly more portable
+
 # reset colors
 nocolor="\033[0m"
 
