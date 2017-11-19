@@ -33,21 +33,23 @@ big_red_x="\[$red\]\342\234\227\[$box_color_\]"
 function add_git_branch {
     BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null) || return
 
-    LOCAL_SHA=$(git rev-parse HEAD)
+    LOCAL_SHA=$(git rev-parse HEAD 2>/dev/null)
     REMOTE_SHA=$(git rev-parse origin/$BRANCH 2>/dev/null)
     MERGE_BASE=$(git merge-base $BRANCH origin/$BRANCH 2>/dev/null)
 
     git_color=$white
-    if [[ -z $REMOTE_SHA ]]; then
-        git_color+=$boldbggray        # no upstream configured
-    elif [[ $LOCAL_SHA = $REMOTE_SHA ]]; then
-        git_color+=$boldbgblue        # up to date
-    elif [[ $LOCAL_SHA = $MERGE_BASE ]]; then
-        git_color+=$boldbgcyan        # needs pull
-    elif [[ $REMOTE_SHA = $MERGE_BASE ]]; then
-        git_color+=$boldbggreen       # changes to push
+    if git rev-parse HEAD &>/dev/null || git rev-parse origin/$BRANCH &>/dev/null; then
+        if [[ $LOCAL_SHA = $REMOTE_SHA ]]; then
+            git_color+=$boldbgblue        # up to date
+        elif [[ $LOCAL_SHA = $MERGE_BASE ]]; then
+            git_color+=$boldbgcyan        # needs pull
+        elif [[ $REMOTE_SHA = $MERGE_BASE ]]; then
+            git_color+=$boldbggreen       # changes to push
+        else
+            git_color+=$boldbgred         # local and remote have diverged
+        fi
     else
-        git_color+=$boldbgred         # local and remote have diverged
+        git_color+=$boldbggray        # no upstream or no commits
     fi
     echo -e ">\x01$git_color\x02 $BRANCH \x01$box_color_\x02"
 }
