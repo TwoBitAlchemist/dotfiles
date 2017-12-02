@@ -1,4 +1,5 @@
 # Vim swap files
+*.swo
 *.swp
 
 # Byte-compiled / optimized / DLL files
@@ -8,6 +9,9 @@ __pycache__/
 pyvenv.cfg
 
 # Distribution / packaging
+build/
+dist/
+*.egg-info/
 bin/
 include/
 lib/
